@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아지트 게시판</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f5f6fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background: #002f6c;
+            color: #ffffff; /* 타이틀을 흰색으로 변경 */
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Dancing Script', cursive; /* 다른 필기체 폰트로 변경 */
+        }
+        .date-and-button {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            text-align: right;
+        }
+        .date {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-family: 'Noto Sans KR', sans-serif; /* 폰트 원래대로 변경 */
+        }
+        .button {
+            padding: 12px 20px;
+            background: #ffd700;
+            color: #002f6c;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            font-family: 'Noto Sans KR', sans-serif; /* 폰트 원래대로 변경 */
+        }
+        .button:hover {
+            background: #ffcc00;
+        }
+        .board-container {
+            display: flex;
+            flex-wrap: wrap; /* 모바일에서는 세로로 나열되도록 설정 */
+            gap: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            flex: 1 1 100%; /* 모바일에서는 세로로 나열되도록 설정 */
+        }
+        h1, h2, h3 {
+            margin: 0;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 1.8rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .post:last-child {
+            border-bottom: none;
+        }
+        .post-title {
+            font-size: 1.4rem;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .post-title:hover {
+            text-decoration: underline;
+        }
+        .post-content {
+            margin-top: 8px;
+            font-size: 1.1rem;
+        }
+        textarea {
+            width: 100%;
+            height: 140px;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            color: #333;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #002f6c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Noto Sans KR', sans-serif; /* 폰트 원래대로 변경 */
+        }
+        button:hover {
+            background: #001f4a;
+        }
+        
+        /* 공지사항 폰트 색상 */
+        .notice-board h2 {
+            color: #ff4500; /* 공지사항 제목 색상 */
+        }
+        .notice-board .post-title {
+            color: #ff4500; /* 공지사항 게시글 제목 색상 */
+        }
+        .notice-board .post-content {
+            color: #666; /* 공지사항 내용 색상 */
+        }
+
+        /* 아지트 게시판 폰트 색상 */
+        .board-container .container h2 {
+            color: #002f6c; /* 아지트 게시판 제목 색상 */
+        }
+        .board-container .container .post-title {
+            color: #1E90FF; /* 아지트 게시판 게시글 제목 색상 */
+        }
+        .board-container .container .post-content {
+            color: #ccc; /* 아지트 게시판 내용 색상 */
+        }
+
+        /* 더보기 버튼 스타일 */
+        .more-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #002f6c;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            display: block;
+            font-size: 1rem;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .more-button:hover {
+            background: #001f4a;
+        }
+
+        /* 반응형 디자인 */
+        @media (min-width: 768px) {
+            .board-container {
+                flex-direction: row; /* PC에서 가로로 나열되도록 설정 */
+            }
+            .container {
+                flex: 1 1 calc(50% - 30px); /* PC에서는 가로로 나열되도록 설정 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KMU Agit</h1> <!-- 타이틀을 Agit로 변경 -->
+        <div class="date-and-button">
+            <div class="date" id="current-date"></div>
+            <a href="https://portal.kookmin.ac.kr/por/ln" class="button" target="_blank">On국민 바로가기</a>
+        </div>
+    </header>
+    
+    <div class="board-container">
+        <!-- 공지사항 게시판 -->
+        <div class="container notice-board">
+            <h2 class="board-title">공지사항</h2>
+            <div id="notice-board-posts"></div>
+            <a href="임시파일1.html" class="more-button">더보기</a> <!-- 더보기 버튼 추가 -->
+        </div>
+        
+        <!-- 아지트 게시판 -->
+        <div class="container">
+            <h2>일반 게시판</h2>
+            <div id="general-board-posts"></div>
+            <a href="임시파일2.html" class="more-button">더보기</a> <!-- 더보기 버튼 추가 -->
+        </div>
+    </div>
+
+    <script>
+        const dateElement = document.getElementById('current-date');
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        dateElement.textContent = formattedDate;
+
+        const noticeBoardPosts = [
+            { title: "공지사항 제목 1", content: "공지사항 내용이 여기 들어갑니다." },
+            { title: "공지사항 제목 2", content: "공지사항 내용이 여기 들어갑니다." },
+            { title: "공지사항 제목 3", content: "공지사항 내용이 여기 들어갑니다." }
+        ];
+
+        const generalBoardPosts = [
+            { title: "게시글 제목 1", content: "게시글 내용이 여기 들어갑니다." },
+            { title: "게시글 제목 2", content: "게시글 내용이 여기 들어갑니다." },
+            { title: "게시글 제목 3", content: "게시글 내용이 여기 들어갑니다." }
+        ];
+
+        function renderPosts(posts, elementId) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = posts.map(post => `
+                <div class="post">
+                    <a href="#" class="post-title">${post.title}</a>
+                    <div class="post-content">${post.content}</div>
+                </div>
+            `).join('');
+        }
+
+        renderPosts(noticeBoardPosts, 'notice-board-posts');
+        renderPosts(generalBoardPosts, 'general-board-posts');
+    </script>
+</body>
+</html>
